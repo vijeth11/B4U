@@ -1,6 +1,7 @@
 package com.example.stpl.b4u;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -57,7 +58,14 @@ public class MainActivity extends AppCompatActivity
         imageAdapter=new ImageAdapter(this,getLayoutInflater());
         gridview.setAdapter(imageAdapter);
 
-
+        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                // TODO Auto-generated method stub
+                Toast.makeText(MainActivity.this, "got", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -140,9 +148,11 @@ public class MainActivity extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
                 RadioButton paytmRadio=(RadioButton)view.findViewById(R.id.paytmMode);
                 RadioButton cashRadio=(RadioButton)view.findViewById(R.id.cashMode);
-                if(paytmRadio.isChecked())
+                if(paytmRadio.isChecked()) {
                     Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
-
+                    Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
+                    startActivity(menuIntent);
+                }
                 else if(cashRadio.isChecked())
                     Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
                 else {
