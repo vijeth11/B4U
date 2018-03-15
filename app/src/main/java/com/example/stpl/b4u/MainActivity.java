@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity
                                         int position, long id) {
                 // TODO Auto-generated method stub
                 Toast.makeText(MainActivity.this, "got", Toast.LENGTH_SHORT).show();
+                showPaymentDialog();
                 return true;
             }
         });
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPaymentDialog();
+                startActivity(new Intent(MainActivity.this,Main2Activity.class));
             }
         });
 
@@ -149,12 +150,14 @@ public class MainActivity extends AppCompatActivity
                 RadioButton paytmRadio=(RadioButton)view.findViewById(R.id.paytmMode);
                 RadioButton cashRadio=(RadioButton)view.findViewById(R.id.cashMode);
                 if(paytmRadio.isChecked()) {
-                    Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
                     Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
                     startActivity(menuIntent);
                 }
-                else if(cashRadio.isChecked())
-                    Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                else if(cashRadio.isChecked()) {
+                    startActivity(new Intent(MainActivity.this,Main3Activity.class));
+                    //Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                }
                 else {
                     showPaymentDialog();
                     Toast.makeText(MainActivity.this, "Select one plox", Toast.LENGTH_SHORT).show();
