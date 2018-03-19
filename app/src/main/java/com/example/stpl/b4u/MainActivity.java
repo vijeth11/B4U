@@ -23,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity
                                         int position, long id) {
                 // TODO Auto-generated method stub
                 Toast.makeText(MainActivity.this, "got", Toast.LENGTH_SHORT).show();
-                showPaymentDialog();
+                showDiscription(position);
                 return true;
             }
         });
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Main2Activity.class));
+           showEatingDialog();
             }
         });
 
@@ -136,31 +137,54 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void showPaymentDialog() {
+    private void showDiscription(int id)
+    {
         builder=new AlertDialog.Builder(MainActivity.this);
         builder.setIcon(R.mipmap.ic_launcher);
-        builder.setTitle("Title");
-        builder.setMessage("Message");
+        builder.setTitle("About");
+        builder.setMessage(imageAdapter.getName(id));
+       // Toast.makeText(MainActivity.this,"id "+Integer.toString(id),Toast.LENGTH_SHORT).show();
+        view =getLayoutInflater().inflate(R.layout.discription_show,null);
+        TextView text = (TextView)view.findViewById(R.id.discriptions);
+        text.setText(imageAdapter.getDiscription(id));
+        builder.setView(view);
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog=builder.create();
+        dialog.show();
+
+
+    }
+    private void showEatingDialog() {
+        builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("Choose Place");
+        builder.setMessage("Where do you want to eat");
 
         view =getLayoutInflater().inflate(R.layout.payment_chooser,null);
         builder.setView(view);
         builder.setNeutralButton("Proceed", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                RadioButton paytmRadio=(RadioButton)view.findViewById(R.id.paytmMode);
-                RadioButton cashRadio=(RadioButton)view.findViewById(R.id.cashMode);
-                if(paytmRadio.isChecked()) {
-                   // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                RadioButton parcel=(RadioButton)view.findViewById(R.id.parcel);
+                RadioButton isB4u=(RadioButton)view.findViewById(R.id.isB4u);
+                if(parcel.isChecked()) {
+                    // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
                     Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
                     startActivity(menuIntent);
                 }
-                else if(cashRadio.isChecked()) {
-                    startActivity(new Intent(MainActivity.this,Main3Activity.class));
+                else if(isB4u.isChecked()) {
+                    Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
+                    startActivity(menuIntent);
                     //Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    showPaymentDialog();
-                    Toast.makeText(MainActivity.this, "Select one plox", Toast.LENGTH_SHORT).show();
+                    showEatingDialog();
+                    Toast.makeText(MainActivity.this, "Select one option buddy", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -172,7 +196,6 @@ public class MainActivity extends AppCompatActivity
         });
         dialog=builder.create();
         dialog.show();
-
     }
 
     @Override

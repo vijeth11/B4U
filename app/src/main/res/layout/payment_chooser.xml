@@ -10,14 +10,14 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/paytmMode"
-            android:text="Paytm"/>
+            android:id="@+id/parcel"
+            android:text="Parcel"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cashMode"
-            android:text="Cash"/>
+            android:id="@+id/isB4u"
+            android:text="B4u"/>
     </RadioGroup>
 
 </LinearLayout>
