@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         itemlists = new ArrayList<>();
         gridview = (GridView) findViewById(R.id.gridview);
         new GetContacts().execute();
-
+        startActivityForResult(new Intent(MainActivity.this,Splash.class),1010);
 
         gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v,
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setTitle("About");
         builder.setMessage(name[id+1]);
-       Toast.makeText(MainActivity.this,links[id+1],Toast.LENGTH_SHORT).show();
+//       Toast.makeText(MainActivity.this,links[id+1],Toast.LENGTH_SHORT).show();
         view =getLayoutInflater().inflate(R.layout.discription_show,null);
         TextView text = (TextView)view.findViewById(R.id.discriptions);
         text.setText(Discription[id+1]);
@@ -292,7 +292,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MainActivity.this,"Json Data is downloading",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this,"Json Data is downloading",Toast.LENGTH_LONG).show();
+
 
         }
 
@@ -378,7 +379,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             gridview.setAdapter(new ImageAdapter(MainActivity.this, Arrays.copyOfRange(links, 1, links.length),Arrays.copyOfRange(name, 1, name.length)));
-
+            finishActivity(1010);
         }
     }
 }
