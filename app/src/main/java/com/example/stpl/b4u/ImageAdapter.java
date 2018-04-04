@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -61,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
 
 
           if(convertView==null) {
@@ -100,14 +101,15 @@ public class ImageAdapter extends BaseAdapter {
                       plus.setVisibility(plus.getVisibility()==View.VISIBLE?View.INVISIBLE:View.VISIBLE);
                       quant.setVisibility(quant.getVisibility()==View.VISIBLE?View.INVISIBLE:View.VISIBLE);
                       quant.setText("1");
-                      MainActivity.quant[position]=1;
+                      MainActivity.quant[position+1]=1;
                       if (tmpImg.getVisibility()==View.VISIBLE) {
                           ItemSelected++;
-                          selected[position]=true;
+                          selected[position+1]=true;
+
                       }
                       else {
                           ItemSelected--;
-                          selected[position]=false;
+                          selected[position+1]=false;
 
                       }
                       tmpImg1.setAlpha(tmpImg.getVisibility()==View.VISIBLE?0.5f:1.0f);
@@ -121,9 +123,9 @@ public class ImageAdapter extends BaseAdapter {
                       minus.setOnClickListener(new View.OnClickListener() {
                           @Override
                           public void onClick(View v) {
-                              if(MainActivity.quant[position]-1>0)
+                              if(MainActivity.quant[position+1]-1>0)
                               {
-                                  MainActivity.quant[position]-=1;
+                                  MainActivity.quant[position+1]-=1;
                                   quant.setText(String.valueOf(Integer.parseInt(quant.getText().toString())-1));
                               }
                               update();
@@ -133,7 +135,7 @@ public class ImageAdapter extends BaseAdapter {
                       plus.setOnClickListener(new View.OnClickListener() {
                           @Override
                           public void onClick(View v) {
-                              MainActivity.quant[position]+=1;
+                              MainActivity.quant[position+1]+=1;
                               quant.setText(String.valueOf(Integer.parseInt(quant.getText().toString())+1));
                               update();
                           }
@@ -155,10 +157,10 @@ public class ImageAdapter extends BaseAdapter {
     {
         String selectedItemList="";
         double Total=0;
-        for(int i=0;i<selected.length-1;i++)
+        for(int i=1;i<selected.length-1;i++)
             if(selected[i]) {
-                selectedItemList += name[i] + "      quantity = "+String.valueOf(MainActivity.quant[i])+"\n";
-                Total += MainActivity.cost[i+1]*MainActivity.quant[i];
+                selectedItemList += name[i-1] + "      quantity = "+String.valueOf(MainActivity.quant[i])+"\n";
+                Total += MainActivity.cost[i]*MainActivity.quant[i];
             }
 
         MainActivity.itemlist.setText(selectedItemList);

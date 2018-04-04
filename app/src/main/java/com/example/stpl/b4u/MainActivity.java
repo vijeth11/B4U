@@ -355,6 +355,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
+
             gridview.setAdapter(new ImageAdapter(MainActivity.this, Arrays.copyOfRange(links, 1, links.length),Arrays.copyOfRange(name, 1, name.length)));
             finishActivity(1010);
         }
