@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -24,7 +27,9 @@ public class Main2Activity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main2);
         rootLayout = (FrameLayout) findViewById(R.id.root_layout);
-
+        final EditText edt1 = (EditText) findViewById(R.id.editText);
+        TextView text = (TextView) findViewById(R.id.cost);
+        text.setText(getIntent().getStringExtra("totalCost"));
         if (savedInstanceState == null) {
             rootLayout.setVisibility(View.INVISIBLE);
 
@@ -48,7 +53,8 @@ public class Main2Activity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Main2Activity.this,Main3Activity.class));
+//                Toast.makeText(Main2Activity.this,edt1.getText(),Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Main2Activity.this,Main3Activity.class).putExtra("txid",edt1.getText().toString()).putExtra("orders",getIntent().getStringExtra("orders")).putExtra("totalCost",getIntent().getStringExtra("totalCost")));
                 finish();
             }
         });

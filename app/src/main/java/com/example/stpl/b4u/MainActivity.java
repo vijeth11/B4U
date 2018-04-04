@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -29,6 +31,7 @@ import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.WrapperListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,21 +41,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private BottomSheetBehavior sheetBehavior;
-    private Integer ItemSelected=0;
+    public static Integer ItemSelected=0;
     AlertDialog dialog;
     AlertDialog.Builder builder;
     View view;
-    private String[] name;
-    private Double[] cost;
-    private String[] Discription;
+    public static int[] quant;
+    public  static String[] name;
+    public static Double[] cost;
+    public static  String[] Discription;
     private String TAG = MainActivity.class.getSimpleName();
     private String links[];
+    public static Boolean selected[];
     private JSONArray items;
+    public static  TextView itemlist,totalCost ;
+    public static LinearLayout bottomSheet;
     ArrayList<HashMap<String, String>> itemlists;
     GridView gridview;
 
@@ -63,8 +71,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
+        totalCost=(TextView) findViewById(R.id.ItemTotalCost);
+        itemlist =(TextView) findViewById(R.id.orders);
+        bottomSheet=findViewById(R.id.bottom_sheet);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -85,29 +94,11 @@ public class MainActivity extends AppCompatActivity
                                         int position, long id) {
                 // TODO Auto-generated method stub
                // Toast.makeText(MainActivity.this, "got", Toast.LENGTH_SHORT).show();
-                showDiscription(position);
+               // showDiscription(position);
                 return true;
             }
         });
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                ImageView tmpImg=v.findViewById(R.id.ticker);
-                ImageView tmpImg1 = v.findViewById(R.id.img);
-                tmpImg.setVisibility(tmpImg.getVisibility()==View.VISIBLE?View.INVISIBLE:View.VISIBLE);
-                if (tmpImg.getVisibility()==View.VISIBLE)
-                    ItemSelected++;
-                else
-                    ItemSelected--;
-                tmpImg1.setAlpha(tmpImg.getVisibility()==View.VISIBLE?0.5f:1.0f);
-                if(ItemSelected==0)
-                    findViewById(R.id.bottom_sheet).setVisibility(View.GONE);
-                else
-                    findViewById(R.id.bottom_sheet).setVisibility(View.VISIBLE);
-
-            }
-        });
-
+//
 
 
         findViewById(R.id.bottomSheet).setOnClickListener(new View.OnClickListener() {
@@ -158,28 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void showDiscription(int id)
-    {
-        builder=new AlertDialog.Builder(MainActivity.this);
-        builder.setIcon(R.mipmap.ic_launcher);
-        builder.setTitle("About");
-        builder.setMessage(name[id+1]);
-//       Toast.makeText(MainActivity.this,links[id+1],Toast.LENGTH_SHORT).show();
-        view =getLayoutInflater().inflate(R.layout.discription_show,null);
-        TextView text = (TextView)view.findViewById(R.id.discriptions);
-        text.setText(Discription[id+1]);
-        builder.setView(view);
-        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
 
-            }
-        });
-        dialog=builder.create();
-        dialog.show();
-
-
-    }
     private void showEatingDialog() {
         builder=new AlertDialog.Builder(MainActivity.this);
         builder.setIcon(R.mipmap.ic_launcher);
@@ -188,31 +158,34 @@ public class MainActivity extends AppCompatActivity
 
         view =getLayoutInflater().inflate(R.layout.payment_chooser,null);
         builder.setView(view);
-        builder.setNeutralButton("Proceed", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                RadioButton parcel=(RadioButton)view.findViewById(R.id.parcel);
-                RadioButton isB4u=(RadioButton)view.findViewById(R.id.isB4u);
-                if(parcel.isChecked()) {
-                    // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
-                    Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
-                    startActivity(menuIntent);
-                }
-                else if(isB4u.isChecked()) {
-                    Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class);
-                    startActivity(menuIntent);
-                    //Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    showEatingDialog();
-                    Toast.makeText(MainActivity.this, "Select one option buddy", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+
+            }
+
+        });
+        builder.setNegativeButton("Proceed", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                    RadioButton parcel=(RadioButton)view.findViewById(R.id.parcel);
+                    RadioButton isB4u=(RadioButton)view.findViewById(R.id.isB4u);
+                    if(parcel.isChecked()) {
+                        // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",itemlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
+                        startActivity(menuIntent);
+                    }
+                    else if(isB4u.isChecked()) {
+                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",itemlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
+                        startActivity(menuIntent);
+                        //Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        showEatingDialog();
+                        Toast.makeText(MainActivity.this, "Select one option buddy", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
         dialog=builder.create();
@@ -359,10 +332,14 @@ public class MainActivity extends AppCompatActivity
             Discription=new String[items.length()+1];
             cost=new Double[items.length()+1];
             name=new String[items.length()+1];
+            selected=new Boolean[items.length()+1];
+            quant =new int[items.length()+1];
             Log.e(TAG,"onPostExecute is running");
             int count=0;
             for(HashMap<String,String>map:itemlists){
                 count++;
+                selected[count]=false;
+                quant[count]=0;
                 for(Map.Entry<String,String>mapEntry:map.entrySet())
                 {
                     String key = mapEntry.getKey();

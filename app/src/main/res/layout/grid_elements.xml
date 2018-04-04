@@ -9,23 +9,55 @@
  <ImageView
      android:layout_width="200dp"
      android:id="@+id/img"
+
      android:layout_height="200dp"
      android:scaleType="fitXY"/>
 
     <ImageView
+        android:id="@+id/ticker"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:scaleType="fitXY"
         android:src="@drawable/tick"
-        android:id="@+id/ticker"
+        android:visibility="invisible" />
+    <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img"
+            android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/minus"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/img"
+        android:layout_toStartOf="@+id/qual"
+        android:text="-"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/qual"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/img"
+        android:layout_toStartOf="@+id/plus"
+        android:text="1000"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/plus"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/img"
+        android:layout_alignEnd="@+id/img"
+        android:text="+"
         android:visibility="invisible"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/text"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/img"
-        android:layout_height="wrap_content"
-        />
+
 </RelativeLayout>

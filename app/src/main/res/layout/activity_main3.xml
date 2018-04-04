@@ -26,11 +26,5 @@
         android:id="@+id/ticker1"
         android:visibility="invisible"
         android:src="@drawable/tick" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/click"
-        android:text="click"/>
+
 </RelativeLayout>
