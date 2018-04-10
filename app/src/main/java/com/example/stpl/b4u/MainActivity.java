@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity
     private String links[];
     public static Boolean selected[];
     private JSONArray items;
-    public static  TextView itemlist,totalCost ;
+    public static  TextView orderlist,totalCost ;
     public static LinearLayout bottomSheet;
     ArrayList<HashMap<String, String>> itemlists;
+    HashMap<String, String> itemlist;
     GridView gridview;
 
     @Override
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         totalCost=(TextView) findViewById(R.id.ItemTotalCost);
-        itemlist =(TextView) findViewById(R.id.orders);
+        orderlist =(TextView) findViewById(R.id.orders);
         bottomSheet=findViewById(R.id.bottom_sheet);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,18 +87,10 @@ public class MainActivity extends AppCompatActivity
 
         itemlists = new ArrayList<>();
         gridview = (GridView) findViewById(R.id.gridview);
-        new GetContacts().execute();
+        new GetItems().execute();
         startActivityForResult(new Intent(MainActivity.this,Splash.class),1010);
 
-        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v,
-                                        int position, long id) {
-                // TODO Auto-generated method stub
-               // Toast.makeText(MainActivity.this, "got", Toast.LENGTH_SHORT).show();
-               // showDiscription(position);
-                return true;
-            }
-        });
+
 //
 
 
@@ -170,14 +163,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                     RadioButton parcel=(RadioButton)view.findViewById(R.id.parcel);
-                    RadioButton isB4u=(RadioButton)view.findViewById(R.id.isB4u);
+                    RadioButton inB4u=(RadioButton)view.findViewById(R.id.isB4u);
                     if(parcel.isChecked()) {
                         // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
-                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",itemlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
+                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",orderlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
                         startActivity(menuIntent);
                     }
-                    else if(isB4u.isChecked()) {
-                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",itemlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
+                    else if(inB4u.isChecked()) {
+                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",orderlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
                         startActivity(menuIntent);
                         //Toast.makeText(MainActivity.this, "No cash bro plox ;_;", Toast.LENGTH_SHORT).show();
                     }
@@ -260,7 +253,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    private class GetItems extends AsyncTask<Void, Void, Void> {
 
         @Override
         public void onPreExecute() {
@@ -297,7 +290,7 @@ public class MainActivity extends AppCompatActivity
 
 
                         // tmp hash map for single contact
-                        HashMap<String, String> itemlist = new HashMap<>();
+                        itemlist = new HashMap<>();
 
                         // adding each child node to HashMap key => value
                         itemlist.put("id", id);
@@ -328,16 +321,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onPostExecute(Void result) {
             super.onPostExecute(result);
-            links=new String[items.length()+1];
-            Discription=new String[items.length()+1];
-            cost=new Double[items.length()+1];
-            name=new String[items.length()+1];
-            selected=new Boolean[items.length()+1];
-            quant =new int[items.length()+1];
+            links=new String[itemlists.size()];
+            Discription=new String[itemlists.size()];
+            cost=new Double[itemlists.size()];
+            name=new String[itemlists.size()];
+            selected=new Boolean[itemlists.size()];
+            quant =new int[itemlists.size()];
             Log.e(TAG,"onPostExecute is running");
             int count=0;
             for(HashMap<String,String>map:itemlists){
-                count++;
                 selected[count]=false;
                 quant[count]=0;
                 for(Map.Entry<String,String>mapEntry:map.entrySet())
@@ -353,11 +345,15 @@ public class MainActivity extends AppCompatActivity
                     if(key=="discription")
                         Discription[count]=value;
                 }
+                count++;
             }
 
 
-            gridview.setAdapter(new ImageAdapter(MainActivity.this, Arrays.copyOfRange(links, 1, links.length),Arrays.copyOfRange(name, 1, name.length)));
+            gridview.setAdapter(new ImageAdapter(MainActivity.this, links,name));
+            itemlists.remove(itemlist);
             finishActivity(1010);
         }
     }
+
+
 }

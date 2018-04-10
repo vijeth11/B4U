@@ -101,15 +101,15 @@ public class ImageAdapter extends BaseAdapter {
                       plus.setVisibility(plus.getVisibility()==View.VISIBLE?View.INVISIBLE:View.VISIBLE);
                       quant.setVisibility(quant.getVisibility()==View.VISIBLE?View.INVISIBLE:View.VISIBLE);
                       quant.setText("1");
-                      MainActivity.quant[position+1]=1;
+                      MainActivity.quant[position]=1;
                       if (tmpImg.getVisibility()==View.VISIBLE) {
                           ItemSelected++;
-                          selected[position+1]=true;
+                          selected[position]=true;
 
                       }
                       else {
                           ItemSelected--;
-                          selected[position+1]=false;
+                          selected[position]=false;
 
                       }
                       tmpImg1.setAlpha(tmpImg.getVisibility()==View.VISIBLE?0.5f:1.0f);
@@ -123,9 +123,9 @@ public class ImageAdapter extends BaseAdapter {
                       minus.setOnClickListener(new View.OnClickListener() {
                           @Override
                           public void onClick(View v) {
-                              if(MainActivity.quant[position+1]-1>0)
+                              if(MainActivity.quant[position]-1>0)
                               {
-                                  MainActivity.quant[position+1]-=1;
+                                  MainActivity.quant[position]-=1;
                                   quant.setText(String.valueOf(Integer.parseInt(quant.getText().toString())-1));
                               }
                               update();
@@ -135,7 +135,7 @@ public class ImageAdapter extends BaseAdapter {
                       plus.setOnClickListener(new View.OnClickListener() {
                           @Override
                           public void onClick(View v) {
-                              MainActivity.quant[position+1]+=1;
+                              MainActivity.quant[position]+=1;
                               quant.setText(String.valueOf(Integer.parseInt(quant.getText().toString())+1));
                               update();
                           }
@@ -157,13 +157,13 @@ public class ImageAdapter extends BaseAdapter {
     {
         String selectedItemList="";
         double Total=0;
-        for(int i=1;i<selected.length-1;i++)
+        for(int i=0;i<selected.length;i++)
             if(selected[i]) {
-                selectedItemList += name[i-1] + "      quantity = "+String.valueOf(MainActivity.quant[i])+"\n";
+                selectedItemList += name[i] + "      quantity = "+String.valueOf(MainActivity.quant[i])+"\n";
                 Total += MainActivity.cost[i]*MainActivity.quant[i];
             }
 
-        MainActivity.itemlist.setText(selectedItemList);
+        MainActivity.orderlist.setText(selectedItemList);
         MainActivity.totalCost.setText("₹"+String.valueOf(Total));
     }
     public  void showDiscription(int id)
@@ -175,7 +175,7 @@ public class ImageAdapter extends BaseAdapter {
 //       Toast.makeText(MainActivity.this,links[id+1],Toast.LENGTH_SHORT).show();
         view =((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.discription_show,null);
         TextView text = (TextView)view.findViewById(R.id.discriptions);
-        text.setText(MainActivity.Discription[id+1]);
+        text.setText(MainActivity.Discription[id]);
         builder.setView(view);
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override

@@ -32,10 +32,11 @@ public class Main3Activity extends AppCompatActivity {
         wheel = findViewById(R.id.progress_wheel);
         String txid = getIntent().getStringExtra("txid");
         String orders = getIntent().getStringExtra("orders").toString();
+        String totalCost=getIntent().getStringExtra("totalCost").toString().replace("₹","");
         orders=orders.replaceAll("(\\n)+", "\\\\n");
-        String urls="https://vijeth11.000webhostapp.com/?txid="+txid+"&cost=200&order="+orders.replace(" ","+");
+        String urls="https://vijeth11.000webhostapp.com/?txid="+txid+"&cost="+totalCost+"&order="+orders.replace(" ","+");
 
-        //Toast.makeText(Main3Activity.this,urls,Toast.LENGTH_LONG).show();
+        Toast.makeText(Main3Activity.this,urls,Toast.LENGTH_LONG).show();
         updateTheData(urls);
 
 

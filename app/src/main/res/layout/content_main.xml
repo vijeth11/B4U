@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:columnWidth="150dp"
         android:numColumns="auto_fit"
+        android:paddingBottom="40dp"
         android:verticalSpacing="1dp"
         android:horizontalSpacing="1dp"
         android:stretchMode="columnWidth"
