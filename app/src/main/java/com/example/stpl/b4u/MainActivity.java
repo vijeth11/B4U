@@ -1,5 +1,6 @@
 package com.example.stpl.b4u;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -223,18 +225,37 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.About) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder;
+            builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setTitle("About Us");
+            builder.setMessage("B4U");
+            View v=((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.discription_show,null);
+            TextView text = (TextView)v.findViewById(R.id.discriptions);
+            text.setText("yet to be filled");
+            builder.setView(v);
+            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-        } else if (id == R.id.nav_slideshow) {
+                }
+            });
+            dialog=builder.create();
+            dialog.show();
 
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Please share the app.");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.feedback) {
 
+            Toast.makeText(this,"yet to be added ",Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
