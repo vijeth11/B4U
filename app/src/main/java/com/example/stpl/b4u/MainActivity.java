@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Please share the app.");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://drive.google.com/open?id=1vTGuzkEUvzHabAVzBz8qJa6ymXvbzNz1");
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
