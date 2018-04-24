@@ -26,7 +26,8 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent" />
         <activity android:name=".Main3Activity" />
-        <activity android:name=".Splash"></activity>
+        <activity android:name=".Splash" />
+        <activity android:name=".Feedback"></activity>
     </application>
 
 </manifest>

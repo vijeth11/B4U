@@ -26,5 +26,13 @@
         android:id="@+id/ticker1"
         android:visibility="invisible"
         android:src="@drawable/tick" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/error"
+        android:visibility="invisible"
+        android:src="@drawable/error" />
 
 </RelativeLayout>

@@ -112,11 +112,11 @@ public class MainActivity extends AppCompatActivity
                     case BottomSheetBehavior.STATE_HIDDEN:
                         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     case BottomSheetBehavior.STATE_EXPANDED: {
-                        Toast.makeText(MainActivity.this, "Sheet expanded", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this, "Sheet expanded", Toast.LENGTH_SHORT).show();
                     }
                     break;
                     case BottomSheetBehavior.STATE_COLLAPSED: {
-                        Toast.makeText(MainActivity.this,"sheet collapsed",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this,"sheet collapsed",Toast.LENGTH_SHORT).show();
                     }
                     break;
                     case BottomSheetBehavior.STATE_DRAGGING:
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                     RadioButton inB4u=(RadioButton)view.findViewById(R.id.isB4u);
                     if(parcel.isChecked()) {
                         // Toast.makeText(MainActivity.this, "No poytm cash bro plox ;_;", Toast.LENGTH_SHORT).show();
-                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders",orderlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
+                        Intent menuIntent = new Intent(MainActivity.this, Main2Activity.class).putExtra("orders","Parcel:\n"+orderlist.getText().toString()).putExtra("totalCost",totalCost.getText().toString());
                         startActivity(menuIntent);
                     }
                     else if(inB4u.isChecked()) {
@@ -254,8 +254,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(sendIntent);
 
         } else if (id == R.id.feedback) {
-
-            Toast.makeText(this,"yet to be added ",Toast.LENGTH_SHORT).show();
+            Intent feedback=new Intent(this,Feedback.class);
+            startActivity(feedback);
+            //Toast.makeText(this,"yet to be added ",Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

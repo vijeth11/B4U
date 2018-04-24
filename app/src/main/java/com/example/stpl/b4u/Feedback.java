@@ -5,8 +5,12 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -15,38 +19,49 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class Main3Activity extends AppCompatActivity {
+public class Feedback extends AppCompatActivity {
 
-    private  ProgressWheel wheel=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
-        wheel = findViewById(R.id.progress_wheel);
-        String txid = getIntent().getStringExtra("txid");
-        String orders = getIntent().getStringExtra("orders").toString();
-        String totalCost=getIntent().getStringExtra("totalCost").toString().replace("₹","");
-        orders=orders.replaceAll("(\\n)+", "\\\\n");
-        String urls="https://vijeth11.000webhostapp.com/?txid="+txid+"&cost="+totalCost+"&order="+orders.replace(" ","+");
-
-        //Toast.makeText(Main3Activity.this,urls,Toast.LENGTH_LONG).show();
-        updateTheData(urls);
-
-
+        setContentView(R.layout.activity_feedback);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sample, menu);
+        return true;
     }
 
-    private void updateTheData(String JSON_URL) {
-        //getting the progressbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.get_item:
+                RatingBar rb = (RatingBar) findViewById(R.id.ratingbar);
+                MultiAutoCompleteTextView ml = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
+                String feedback=ml.getText().toString().replaceAll("(\\n)+", "\\\\n");
+                feedback=feedback.replace(" ","+");
+                String rating=String.valueOf(rb.getRating());
+                String url="https://vijeth11.000webhostapp.com/?feedback="+feedback+"&rating="+rating;
+                SendFeedback(url);
+                //Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
 
+        return true;
+    }
 
-        //creating a string request to send request to the url
+    public  void SendFeedback(String JSON_URL)
+    {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL,
                 new Response.Listener<String>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -62,29 +77,17 @@ public class Main3Activity extends AppCompatActivity {
 
                             //we have the array named hero inside the object
                             //so here we are getting that json array
-                            String error =obj.getString("error");
+                            String error =obj.getString("success");
                             String message=obj.getString("message");
-                            if(Objects.equals(error, "TRUE")) {
-                                wheel.setVisibility(View.INVISIBLE);
-                                findViewById(R.id.error).setVisibility(View.VISIBLE);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Main3Activity.this.finish();
-                                    }
-                                },2000);
-                                Toast.makeText(Main3Activity.this, message, Toast.LENGTH_SHORT).show();
+                            if(Objects.equals(error, "1")) {
+
+                                Toast.makeText(Feedback.this, message, Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                             else{
-                                wheel.setVisibility(View.INVISIBLE);
-                                findViewById(R.id.ticker1).setVisibility(View.VISIBLE);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Main3Activity.this.finish();
-                                    }
-                                }, 2000);
+                                Toast.makeText(Feedback.this, message, Toast.LENGTH_SHORT).show();
+                                finish();
+
                             }
                             //now looping through all the elements of the json array
 
@@ -110,5 +113,7 @@ public class Main3Activity extends AppCompatActivity {
 
         //adding the string request to request queue
         requestQueue.add(stringRequest);
+
     }
+
 }
